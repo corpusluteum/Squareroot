@@ -1,20 +1,20 @@
 from __future__ import absolute_import
 from sqrtApi.models import SqrtNumber
 from celery import shared_task
-
+import decimal
 
 @shared_task
-def squareRootProcess(tmpl_vars):
-    new = SqrtNumber(number=tmpl_vars, sqrt=takesRoot(int(tmpl_vars)))
+def squareRootProcess(var):
+    new = SqrtNumber(number=var, sqrt=takesRoot(var))
     new.save()
 
 def takesRoot(number):
-    low = 0
-    high = number + 1
-    while high - low > 1:
-        mid = (low + high) / 2
-        if mid * mid <= number:
-           low = mid
-        else:
-            high = mid
-    return low
+    n = int(number)
+    assert n > 0
+    with decimal.localcontext() as ctx:
+        ctx.prec += 2
+        x, prior = decimal.Decimal(n), None
+        while x != prior:
+            prior = x
+            x = (x + n / x) / 2
+    return +x

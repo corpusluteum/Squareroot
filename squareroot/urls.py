@@ -15,14 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from sqrtApi.views import home, post_collection, post_element
+from sqrtApi.views import get_result, calculate
 
-
-urlpatterns =[
+urlpatterns = (
     url(r'^admin/', admin.site.urls),
-    url(r'^$',home, name='home'),
-    url(r'^calculate$',home, name='home'),
 
     # api
-    url(r'^results/$', post_collection, name='post_collection'),
-]
+    url(r'^results/$', get_result, name='get_result'),
+    url(r'^calculate/', calculate, name='calculate'),
+)
