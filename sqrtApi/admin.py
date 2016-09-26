@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from sqrtApi.models import SqrtNumber
+
+
+admin.site.register(SqrtNumber)

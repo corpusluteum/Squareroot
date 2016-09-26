@@ -5,5 +5,16 @@ from celery import shared_task
 
 @shared_task
 def squareRootProcess(tmpl_vars):
-    new = SqrtNumber(number=tmpl_vars[0], sqrt=tmpl_vars[1])
+    new = SqrtNumber(number=tmpl_vars, sqrt=takesRoot(int(tmpl_vars)))
     new.save()
+
+def takesRoot(number):
+    low = 0
+    high = number + 1
+    while high - low > 1:
+        mid = (low + high) / 2
+        if mid * mid <= number:
+           low = mid
+        else:
+            high = mid
+    return low
